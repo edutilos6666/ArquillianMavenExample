@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.1">
+    <deployment>
+        <exports/>
+        <exclusions/>
+        <local-last value="true"/>
+        <module-alias name="jbossas-ds" />
+        <dependencies>
+     <!--       <module name="javax.api" />
+            <module name="javax.transaction.api" />
+            <module name="javax.xml.rpc.api" />
+            <module name="javax.rmi.api" />
+            <module name="org.omg.api" />-->
+            <module name="configext" />
+        </dependencies>
+    </deployment>
+</jboss-deployment-structure>

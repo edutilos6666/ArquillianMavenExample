@@ -12,22 +12,22 @@ http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
                     .createEntityManager();
         -->
         <properties>
-            <property name="hibernate.ejb.cfgfile" value="/hibernate.cfg.xml" />
-            <!--        <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
+            <!--<property name="hibernate.ejb.cfgfile" value="/hibernate.cfg.xml" />-->
+                    <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true)"/>
 
                     <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
                     <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
                     <property name="hibernate.connection.username" value="root" />
                     <property name="hibernate.connection.password" value="root" />
-                    <property name="hibernate.connection.url" value="jdbc:mysql://localhost/test?serverTimezone=UTC&amp;useSSL=false"/>
+                    <property name="hibernate.connection.url" value="jdbc:mysql://localhost/test4?serverTimezone=UTC&amp;useSSL=false"/>
 
-                    <property name="connection_pool_size" value="1"/>
+                    <property name="hibernate.connection_pool_size" value="1"/>
 
-                    <property name="hbm2ddl.auto" value="create-drop"/>
+                    <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
 
-                    <property name="show_sql" value="true" />
-                    &lt;!&ndash; it is not allowed here &ndash;&gt;
-                    &lt;!&ndash;<mapping class="com.edutilos.model.Worker"/>&ndash;&gt;-->
+                    <property name="hibernate.show_sql" value="true" />
+                    <!-- it is not allowed here -->
+                    <!--<mapping class="com.edutilos.model.Worker"/>-->
         </properties>
     </persistence-unit>
 </persistence>

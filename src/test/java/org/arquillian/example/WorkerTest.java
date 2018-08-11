@@ -24,15 +24,14 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author <a href="http://community.jboss.org/people/dan.j.allen">Dan Allen</a>
@@ -61,6 +60,7 @@ public class WorkerTest {
 //                .addAsWebResource(new File(WEBAPP_SRC, "home.xhtml"))
 //                .addAsWebResource(new File(WEBAPP_SRC, "register.xhtml"))
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+//                   .addAsWebInfResource("jbossas-ds.xml");
 //                .addAsWebInfResource(
 //                        new StringAsset("<faces-config version=\"2.0\"/>"),
 //                        "faces-config.xml");
@@ -70,12 +70,49 @@ public class WorkerTest {
     @Inject
     private WorkerDAO workerDAO;
 
+    private void populateTable() {
+        workerDAO.insert(new Worker(1, "foo", 10, 100.0, true));
+        workerDAO.insert(new Worker(2, "bar", 20, 200.0, false));
+        workerDAO.insert(new Worker(3, "bim", 30, 300.0, true));
+    }
+
+    private void deleteFromTable(Long ... ids) {
+        for(Long id: ids) {
+            workerDAO.delete(id);
+        }
+    }
+
     @Test
     public void testWorkerInsert() {
-        workerDAO.insert(new Worker(1, "foo", 10, 100.0, true));
+        populateTable();
         Worker one = workerDAO.findById(1);
-        Assert.assertEquals(1, one.getId());
-        Assert.assertEquals("foo", one.getName());
-        workerDAO.delete(1);
+        assertEquals(1, one.getId());
+        assertEquals("foo", one.getName());
+        assertEquals(10, one.getAge());
+        assertEquals(100.0, one.getWage(), 0.001);
+        assertEquals(true, one.isActive());
+        deleteFromTable(1L, 2L, 3L);
     }
+
+    @Test
+    public void testWorkerUpdate() {
+        populateTable();
+        workerDAO.update(1L, new Worker(1L, "new_foo", 66, 66.6, false));
+        Worker one = workerDAO.findById(1L);
+        assertEquals("new_foo", one.getName());
+        assertEquals(66, one.getAge());
+        assertEquals(66.6 , one.getWage(), 0.001);
+        assertEquals(false, one.isActive());
+        deleteFromTable(1L, 2L, 3L);
+    }
+
+    @Test
+    public void testWorkerDelete() {
+        populateTable();
+        workerDAO.delete(1L);
+        List<Worker> all = workerDAO.findAll();
+        assertEquals(2, all.size());
+        deleteFromTable(2L, 3L);
+    }
+
 }
